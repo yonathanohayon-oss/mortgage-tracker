@@ -8,238 +8,109 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f5f4f0;
-      --surface: #ffffff;
-      --surface2: #f0efe9;
-      --border: rgba(0,0,0,0.1);
-      --border-md: rgba(0,0,0,0.18);
-      --text: #1a1a18;
-      --text-sec: #6b6a63;
-      --text-ter: #a09f99;
-      --blue: #2255a4;
-      --blue-light: #dce8f8;
-      --amber: #b06b10;
-      --amber-light: #faeedd;
-      --green: #2a6e3f;
-      --green-light: #dff0e6;
-      --red: #a02020;
-      --red-light: #fce8e8;
-      --teal: #0e7060;
-      --teal-light: #ddf0ea;
-      --radius: 10px;
-      --radius-lg: 14px;
+      --bg: #f5f4f0; --surface: #ffffff; --surface2: #f0efe9;
+      --border: rgba(0,0,0,0.1); --border-md: rgba(0,0,0,0.18);
+      --text: #1a1a18; --text-sec: #6b6a63; --text-ter: #a09f99;
+      --blue: #2255a4; --blue-light: #dce8f8;
+      --amber: #b06b10; --amber-light: #faeedd;
+      --green: #2a6e3f; --green-light: #dff0e6;
+      --red: #a02020; --red-light: #fce8e8;
+      --radius: 10px; --radius-lg: 14px;
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #141412;
-        --surface: #1e1e1b;
-        --surface2: #252521;
-        --border: rgba(255,255,255,0.08);
-        --border-md: rgba(255,255,255,0.15);
-        --text: #f0efe8;
-        --text-sec: #a09f96;
-        --text-ter: #6b6a60;
-        --blue: #5b8de0;
-        --blue-light: #1a2d4a;
-        --amber: #d48a30;
-        --amber-light: #2d1f08;
-        --green: #4caf72;
-        --green-light: #0e2a1a;
-        --red: #e06060;
-        --red-light: #2d0f0f;
-        --teal: #30b090;
-        --teal-light: #0a2520;
+        --bg: #141412; --surface: #1e1e1b; --surface2: #252521;
+        --border: rgba(255,255,255,0.08); --border-md: rgba(255,255,255,0.15);
+        --text: #f0efe8; --text-sec: #a09f96; --text-ter: #6b6a60;
+        --blue: #5b8de0; --blue-light: #1a2d4a;
+        --amber: #d48a30; --amber-light: #2d1f08;
+        --green: #4caf72; --green-light: #0e2a1a;
+        --red: #e06060; --red-light: #2d0f0f;
       }
     }
-
-    body {
-      font-family: 'Heebo', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    /* Header */
-    .app-header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 60px;
-    }
+    body { font-family: 'Heebo', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6; }
+    .app-header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
     .logo { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-    .logo-icon {
-      width: 32px; height: 32px; background: var(--blue); border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
+    .logo-icon { width: 32px; height: 32px; background: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
     .logo-icon svg { width: 18px; height: 18px; fill: white; }
-
-    /* Nav Tabs */
-    .nav-tabs {
-      display: flex; gap: 2px;
-    }
-    .nav-tab {
-      padding: 8px 16px; font-size: 14px; font-weight: 400;
-      color: var(--text-sec); background: transparent;
-      border: none; cursor: pointer; border-radius: var(--radius);
-      transition: all 0.15s; font-family: 'Heebo', sans-serif;
-    }
+    .nav-tabs { display: flex; gap: 2px; }
+    .nav-tab { padding: 8px 16px; font-size: 14px; color: var(--text-sec); background: transparent; border: none; cursor: pointer; border-radius: var(--radius); transition: all 0.15s; font-family: 'Heebo', sans-serif; }
     .nav-tab:hover { background: var(--surface2); color: var(--text); }
     .nav-tab.active { background: var(--surface2); color: var(--text); font-weight: 500; }
-
-    /* Layout */
     .app-body { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-
-    /* Panels */
     .panel { display: none; animation: fadeIn 0.2s ease; }
     .panel.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Cards */
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem;
-    }
-    .card-title { font-size: 14px; font-weight: 500; margin-bottom: 1.25rem; color: var(--text); }
-
-    /* Metric cards */
-    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1rem; }
-    @media (max-width: 768px) { .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
-    .metric {
-      background: var(--surface2); border-radius: var(--radius);
-      padding: 1.1rem 1.2rem;
-    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+    .card-title { font-size: 14px; font-weight: 500; margin-bottom: 1.25rem; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 1rem; }
+    @media(max-width:768px){ .metrics-grid { grid-template-columns: repeat(2,1fr); } }
+    .metric { background: var(--surface2); border-radius: var(--radius); padding: 1.1rem 1.2rem; }
     .metric-label { font-size: 11px; color: var(--text-sec); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
-    .metric-value { font-size: 20px; font-weight: 600; color: var(--text); line-height: 1.2; }
+    .metric-value { font-size: 20px; font-weight: 600; line-height: 1.2; }
     .metric-sub { font-size: 12px; color: var(--text-ter); margin-top: 4px; }
-
-    /* Grids */
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
-
-    /* Progress bar */
+    @media(max-width:700px){ .grid-2 { grid-template-columns: 1fr; } }
     .prog-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 3px; }
     .prog-bar { height: 7px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
     .prog-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-
-    /* Charts */
     .chart-wrap { position: relative; width: 100%; }
-
-    /* Table */
     .tbl-wrap { overflow-x: auto; }
     table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
-    table.tbl th {
-      text-align: right; padding: 10px 12px; font-weight: 500; font-size: 11px;
-      color: var(--text-sec); border-bottom: 1px solid var(--border);
-      text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;
-    }
-    table.tbl td {
-      padding: 9px 12px; color: var(--text); border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
+    table.tbl th { text-align: right; padding: 10px 12px; font-weight: 500; font-size: 11px; color: var(--text-sec); border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+    table.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
     table.tbl tr:last-child td { border-bottom: none; }
     table.tbl tr:hover td { background: var(--surface2); }
-
-    /* Badges */
-    .badge {
-      display: inline-block; padding: 2px 8px; border-radius: 20px;
-      font-size: 11px; font-weight: 500;
-    }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
     .badge-green { background: var(--green-light); color: var(--green); }
     .badge-blue { background: var(--blue-light); color: var(--blue); }
     .badge-amber { background: var(--amber-light); color: var(--amber); }
     .badge-red { background: var(--red-light); color: var(--red); }
-    .badge-teal { background: var(--teal-light); color: var(--teal); }
-
-    /* Form elements */
     .form-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 130px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 120px; }
     .form-group label { font-size: 12px; color: var(--text-sec); }
-    .form-group input, .form-group select {
-      padding: 8px 12px; font-size: 14px; font-family: 'Heebo', sans-serif;
-      border: 1px solid var(--border-md); border-radius: var(--radius);
-      background: var(--surface); color: var(--text);
-      transition: border-color 0.15s;
-    }
-    .form-group input:focus, .form-group select:focus {
-      outline: none; border-color: var(--blue);
-    }
-
-    /* Buttons */
-    .btn {
-      padding: 9px 20px; font-size: 13px; font-weight: 500;
-      border: 1px solid var(--border-md); border-radius: var(--radius);
-      background: transparent; color: var(--text);
-      cursor: pointer; transition: all 0.15s; font-family: 'Heebo', sans-serif;
-      white-space: nowrap;
-    }
+    .form-group input, .form-group select { padding: 8px 12px; font-size: 14px; font-family: 'Heebo',sans-serif; border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface); color: var(--text); }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue); }
+    .btn { padding: 9px 20px; font-size: 13px; font-weight: 500; border: 1px solid var(--border-md); border-radius: var(--radius); background: transparent; color: var(--text); cursor: pointer; transition: all 0.15s; font-family: 'Heebo',sans-serif; white-space: nowrap; }
     .btn:hover { background: var(--surface2); }
-    .btn-primary {
-      background: var(--blue); color: white; border-color: var(--blue);
-    }
+    .btn-primary { background: var(--blue); color: white; border-color: var(--blue); }
     .btn-primary:hover { opacity: 0.88; }
-
-    /* Filter row */
-    .filter-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    /* Compare cards */
-    .compare-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px; margin-bottom: 1rem;
-    }
-    .cmp-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.25rem;
-    }
+    .btn-danger { color: var(--red); border-color: var(--red); font-size: 12px; padding: 6px 12px; }
+    .btn-danger:hover { background: var(--red-light); }
+    .filter-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 8px; }
+    .compare-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(175px,1fr)); gap: 12px; margin-bottom: 1rem; }
+    .cmp-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
     .cmp-card.recommended { border: 2px solid var(--blue); }
-    .cmp-card-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
-    .cmp-card-rate { font-size: 12px; color: var(--text-sec); margin-bottom: 12px; }
-    .cmp-metric-label { font-size: 11px; color: var(--text-sec); margin-bottom: 2px; }
-    .cmp-metric-val { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
-
-    /* Legend */
     .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 12px; color: var(--text-sec); }
     .legend span { display: flex; align-items: center; gap: 5px; }
     .legend-sq { width: 10px; height: 10px; border-radius: 2px; }
-
-    /* Divider */
     .divider { height: 1px; background: var(--border); margin: 1rem 0; }
-
-    /* Info row */
     .info-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
     .info-label { font-size: 13px; color: var(--text-sec); }
     .info-value { font-size: 13px; font-weight: 500; }
-
-    /* Page title */
     .page-title { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
     .page-sub { font-size: 14px; color: var(--text-sec); margin-bottom: 1.5rem; }
 
-    /* Mobile nav */
-    @media (max-width: 600px) {
-      .app-header { padding: 0 1rem; }
-      .app-body { padding: 1rem; }
-      .nav-tab { padding: 7px 10px; font-size: 13px; }
-      .logo-text { display: none; }
-    }
+    /* Track cards */
+    .track-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+    .track-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .track-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-left: 8px; flex-shrink: 0; }
+    .track-name-input { font-size: 15px; font-weight: 500; border: none; background: transparent; color: var(--text); font-family: 'Heebo',sans-serif; width: 180px; padding: 2px 4px; border-bottom: 1px solid transparent; }
+    .track-name-input:focus { outline: none; border-bottom-color: var(--blue); }
+    .add-track-btn { display: flex; align-items: center; gap: 8px; padding: 14px 20px; border: 1px dashed var(--border-md); border-radius: var(--radius-lg); background: transparent; color: var(--text-sec); cursor: pointer; font-family: 'Heebo',sans-serif; font-size: 14px; width: 100%; justify-content: center; transition: all 0.15s; margin-bottom: 1rem; }
+    .add-track-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--blue); }
 
-    /* Tooltip helper */
-    [title] { cursor: help; }
+    /* Track tabs */
+    .track-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+    .track-tab { padding: 6px 14px; font-size: 13px; border: 1px solid var(--border-md); border-radius: 20px; background: transparent; color: var(--text-sec); cursor: pointer; font-family: 'Heebo',sans-serif; transition: all 0.15s; display: flex; align-items: center; gap: 6px; }
+    .track-tab.active { font-weight: 500; color: var(--text); background: var(--surface2); }
+    .track-tab-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    select.inline-select { font-size: 13px; padding: 6px 10px; border: 1px solid var(--border-md); border-radius: var(--radius); background: var(--surface); color: var(--text); font-family: 'Heebo',sans-serif; }
+
+    @media(max-width:600px){ .app-header { padding: 0 1rem; } .app-body { padding: 1rem; } .nav-tab { padding: 7px 10px; font-size: 12px; } }
   </style>
 </head>
 <body>
@@ -247,10 +118,8 @@
 <header class="app-header">
   <div class="header-inner">
     <div class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22" style="fill:rgba(255,255,255,0.5);stroke:none"/></svg>
-      </div>
-      <span class="logo-text">מעקב משכנתא</span>
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+      <span>מעקב משכנתא</span>
     </div>
     <nav class="nav-tabs">
       <button class="nav-tab active" onclick="showTab('overview')">סקירה</button>
@@ -267,33 +136,21 @@
   <div id="tab-overview" class="panel active">
     <div class="page-title">סקירה כללית</div>
     <div class="page-sub" id="overview-subtitle">—</div>
-
     <div class="metrics-grid" id="overview-metrics"></div>
-
+    <div class="card">
+      <div class="card-title" style="margin-bottom:0.75rem;">פירוט לפי מסלול</div>
+      <div class="track-tabs" id="track-tabs-overview"></div>
+      <div id="track-detail-overview"></div>
+    </div>
     <div class="grid-2">
       <div class="card">
-        <div class="card-title">תשלום חודשי נוכחי</div>
-        <div id="monthly-breakdown"></div>
-        <div class="divider"></div>
-        <div class="card-title" style="margin-top:4px;">שולם עד כה</div>
-        <div id="paid-so-far"></div>
+        <div class="card-title">ירידת קרן לאורך זמן</div>
+        <div class="chart-wrap" style="height:200px;"><canvas id="principal-chart" role="img" aria-label="ירידת קרן">גרף</canvas></div>
       </div>
       <div class="card">
-        <div class="card-title">ירידת קרן לאורך זמן</div>
-        <div class="chart-wrap" style="height:200px;">
-          <canvas id="principal-chart" role="img" aria-label="ירידת קרן לאורך שנות ההלוואה">גרף ירידת קרן</canvas>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">יחס קרן-ריבית לאורך השנים</div>
-      <div class="legend">
-        <span><span class="legend-sq" style="background:#2255a4;"></span>קרן</span>
-        <span><span class="legend-sq" style="background:#b06b10;"></span>ריבית</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;">
-        <canvas id="split-chart" role="img" aria-label="יחס קרן-ריבית לפי שנה">גרף חלוקה</canvas>
+        <div class="card-title">קרן חודשית ממוצעת לפי שנה</div>
+        <div class="legend" id="split-legend"></div>
+        <div class="chart-wrap" style="height:175px;"><canvas id="split-chart" role="img" aria-label="קרן לפי שנה">גרף</canvas></div>
       </div>
     </div>
   </div>
@@ -301,26 +158,25 @@
   <!-- AMORTIZATION -->
   <div id="tab-amortization" class="panel">
     <div class="page-title">לוח סילוקין</div>
-    <div class="page-sub">כל תשלומי המשכנתא לפי חודשים</div>
-
+    <div class="page-sub">תשלומים מפורטים לפי חודשים</div>
     <div class="card">
       <div class="filter-row">
-        <span style="font-size:14px; color:var(--text-sec);" id="amort-count"></span>
-        <div style="display:flex;gap:8px;align-items:center;">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <label style="font-size:13px;color:var(--text-sec);">מסלול:</label>
+          <select class="inline-select" id="amort-track-filter" onchange="renderAmortTable()"></select>
           <label style="font-size:13px;color:var(--text-sec);">הצג:</label>
-          <select style="font-size:13px;padding:6px 10px;border:1px solid var(--border-md);border-radius:var(--radius);background:var(--surface);color:var(--text);font-family:Heebo,sans-serif;" onchange="renderAmortTable(this.value)" id="amort-filter">
+          <select class="inline-select" id="amort-filter" onchange="renderAmortTable()">
             <option value="all">כל התשלומים</option>
             <option value="12">שנה ראשונה</option>
             <option value="60">5 שנים ראשונות</option>
             <option value="remaining">נותרים בלבד</option>
           </select>
         </div>
+        <span style="font-size:13px;color:var(--text-sec);" id="amort-count"></span>
       </div>
       <div class="tbl-wrap">
         <table class="tbl">
-          <thead><tr>
-            <th>חודש</th><th>תשלום כולל</th><th>קרן</th><th>ריבית</th><th>יתרת קרן</th><th>% שולם</th><th>סטטוס</th>
-          </tr></thead>
+          <thead><tr><th>חודש</th><th>תשלום כולל</th><th>קרן</th><th>ריבית</th><th>יתרת קרן</th><th>% שולם</th><th>סטטוס</th></tr></thead>
           <tbody id="amort-body"></tbody>
         </table>
       </div>
@@ -330,346 +186,381 @@
   <!-- COMPARE -->
   <div id="tab-compare" class="panel">
     <div class="page-title">השוואת מסלולים</div>
-    <div class="page-sub">השווה את המשכנתא שלך עם מסלולים נוספים</div>
-
+    <div class="page-sub">השווה מול מסלולים חלופיים בשוק</div>
     <div class="card">
       <div class="card-title">פרמטרי השוואה</div>
       <div class="form-row">
-        <div class="form-group">
-          <label>סכום השוואה (₪)</label>
-          <input type="number" id="cmp-amount" value="1500000" step="50000">
-        </div>
-        <div class="form-group">
-          <label>תקופה (שנים)</label>
-          <input type="number" id="cmp-years" value="30">
-        </div>
-        <button class="btn btn-primary" onclick="renderCompare()">עדכן השוואה</button>
+        <div class="form-group"><label>סכום השוואה (₪)</label><input type="number" id="cmp-amount" value="1500000" step="50000"></div>
+        <div class="form-group"><label>תקופה (שנים)</label><input type="number" id="cmp-years" value="30"></div>
+        <button class="btn btn-primary" onclick="renderCompare()">עדכן</button>
       </div>
     </div>
-
     <div class="compare-grid" id="compare-grid"></div>
-
     <div class="card">
       <div class="card-title">עלות כוללת לפי מסלול</div>
-      <div class="legend">
-        <span><span class="legend-sq" style="background:#2255a4;"></span>קרן</span>
-        <span><span class="legend-sq" style="background:#b06b10;"></span>ריבית</span>
-      </div>
-      <div class="chart-wrap" style="height:260px;">
-        <canvas id="compare-chart" role="img" aria-label="השוואת עלות כוללת בין מסלולים">גרף השוואה</canvas>
-      </div>
+      <div class="legend"><span><span class="legend-sq" style="background:#2255a4;"></span>קרן</span><span><span class="legend-sq" style="background:#b06b10;"></span>ריבית</span></div>
+      <div class="chart-wrap" style="height:260px;"><canvas id="compare-chart" role="img" aria-label="השוואת עלות">גרף</canvas></div>
     </div>
   </div>
 
   <!-- SETTINGS -->
   <div id="tab-settings" class="panel">
     <div class="page-title">הגדרות משכנתא</div>
-    <div class="page-sub">הגדר את פרטי המשכנתא שלך</div>
-
-    <div class="card">
-      <div class="card-title">פרטי ההלוואה</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>סכום ראשוני (₪)</label>
-          <input type="number" id="s-amount" value="1500000" step="50000">
-        </div>
-        <div class="form-group">
-          <label>ריבית שנתית (%)</label>
-          <input type="number" id="s-rate" value="5.5" step="0.1">
-        </div>
-        <div class="form-group">
-          <label>תקופה (שנים)</label>
-          <input type="number" id="s-years" value="30" min="1" max="40">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>חודשים ששולמו</label>
-          <input type="number" id="s-paid" value="24" min="0">
-        </div>
-        <div class="form-group">
-          <label>סוג מסלול</label>
-          <select id="s-type" onchange="toggleCpi()">
-            <option value="fixed">פריים / קבועה</option>
-            <option value="cpi">צמודת מדד</option>
-          </select>
-        </div>
-        <div class="form-group" id="cpi-group">
-          <label>מדד שנתי (%)</label>
-          <input type="number" id="s-cpi" value="3.5" step="0.1">
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="calcAndRender()">שמור ועדכן</button>
-    </div>
-
-    <div class="card">
-      <div class="card-title">מידע על המשכנתא הנוכחית</div>
-      <div id="settings-summary"></div>
-    </div>
+    <div class="page-sub">הגדר עד 5 מסלולים שמרכיבים את המשכנתא שלך</div>
+    <div id="tracks-container"></div>
+    <button class="add-track-btn" id="add-track-btn" onclick="addTrack()">
+      <span style="font-size:20px;line-height:1;">+</span> הוסף מסלול
+    </button>
+    <button class="btn btn-primary" onclick="calcAndRender()">שמור ועדכן</button>
   </div>
 
 </main>
 
 <script>
-  let mortgage = { amount: 1500000, rate: 5.5, years: 30, paidMonths: 24, type: 'fixed', cpi: 3.5 };
-  let schedule = [];
-  let pChart, sChart, cChart;
+const COLORS = ['#2255a4','#b06b10','#2a6e3f','#5a3ab7','#993c1d'];
+const COLORS_BG = ['rgba(34,85,164,0.1)','rgba(176,107,16,0.1)','rgba(42,110,63,0.1)','rgba(90,58,183,0.1)','rgba(153,60,29,0.1)'];
 
-  function fmt(n) { return Math.round(n).toLocaleString('he-IL'); }
-  function fmtS(n) { return '₪' + fmt(n); }
+let tracks = [
+  { id:1, name:'מסלול ראשון', amount:1000000, rate:5.5, years:30, paidMonths:24, type:'fixed', cpi:3.5 },
+  { id:2, name:'מסלול שני',   amount:500000,  rate:4.2, years:20, paidMonths:24, type:'cpi',   cpi:3.5 },
+];
+let schedules = {};
+let activeTrack = null;
+let pChart, sChart, cChart;
+let nextId = 3;
 
-  function calcSchedule(amount, annualRate, totalMonths, cpiRate, isCpi) {
-    let r = annualRate / 100;
-    if (isCpi) r += (cpiRate || 0) / 100;
-    r = r / 12;
-    const pmt = amount * r * Math.pow(1+r, totalMonths) / (Math.pow(1+r, totalMonths) - 1);
-    let bal = amount;
-    const rows = [];
-    for (let m = 1; m <= totalMonths; m++) {
-      const interest = bal * r;
-      const principal = pmt - interest;
-      bal = Math.max(bal - principal, 0);
-      rows.push({
-        month: m,
-        payment: Math.round(pmt),
-        principal: Math.round(principal),
-        interest: Math.round(interest),
-        balance: Math.round(bal)
-      });
-    }
-    return rows;
+const fmt  = n => Math.round(n).toLocaleString('he-IL');
+const fmtS = n => '₪' + fmt(n);
+
+function calcSchedule(amount, rate, months, cpi, isCpi) {
+  let r = (rate/100 + (isCpi ? cpi/100 : 0)) / 12;
+  if (r === 0) {
+    const p = Math.round(amount/months);
+    return Array.from({length:months},(_,i)=>({month:i+1,payment:p,principal:p,interest:0,balance:Math.round(amount-(i+1)*p)}));
   }
-
-  function toggleCpi() {
-    const isCpi = document.getElementById('s-type').value === 'cpi';
-    document.getElementById('cpi-group').style.opacity = isCpi ? '1' : '0.4';
-    document.getElementById('s-cpi').disabled = !isCpi;
+  const pmt = amount*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);
+  let bal = amount; const rows=[];
+  for(let m=1;m<=months;m++){
+    const interest=bal*r, principal=pmt-interest;
+    bal=Math.max(bal-principal,0);
+    rows.push({month:m,payment:Math.round(pmt),principal:Math.round(principal),interest:Math.round(interest),balance:Math.round(bal)});
   }
+  return rows;
+}
 
-  function calcAndRender() {
-    mortgage.amount = +document.getElementById('s-amount').value;
-    mortgage.rate   = +document.getElementById('s-rate').value;
-    mortgage.years  = +document.getElementById('s-years').value;
-    mortgage.paidMonths = +document.getElementById('s-paid').value;
-    mortgage.type   = document.getElementById('s-type').value;
-    mortgage.cpi    = +document.getElementById('s-cpi').value;
-    schedule = calcSchedule(mortgage.amount, mortgage.rate, mortgage.years * 12, mortgage.cpi, mortgage.type === 'cpi');
-    renderOverview();
-    renderAmortTable(document.getElementById('amort-filter').value);
-    renderCompare();
-    renderSettingsSummary();
-  }
+function recalcAll() {
+  schedules={};
+  tracks.forEach(t => schedules[t.id]=calcSchedule(t.amount,t.rate,t.years*12,t.cpi,t.type==='cpi'));
+}
 
-  function renderOverview() {
-    const paid = mortgage.paidMonths;
-    const total = mortgage.years * 12;
-    const cur = schedule[Math.min(paid, schedule.length-1)];
-    const remaining = cur.balance;
-    const paidPrin = mortgage.amount - remaining;
-    const totalInterest = schedule.reduce((s,r) => s + r.interest, 0);
-    const paidInt = schedule.slice(0, paid).reduce((s,r) => s + r.interest, 0);
-    const mp = schedule[Math.min(paid, schedule.length-1)];
-    const pctPaid = Math.round(paidPrin / mortgage.amount * 100);
+// ─── Overview ───
+function renderOverview() {
+  const totalAmount  = tracks.reduce((s,t)=>s+t.amount,0);
+  const totalMonthly = tracks.reduce((s,t)=>s+(schedules[t.id][0]?.payment||0),0);
+  const totalInt     = tracks.reduce((s,t)=>s+schedules[t.id].reduce((ss,r)=>ss+r.interest,0),0);
+  const totalRemain  = tracks.reduce((s,t)=>{
+    const sc=schedules[t.id]; return s+(sc[Math.min(t.paidMonths,sc.length-1)]?.balance||0);
+  },0);
+  const maxMonths = Math.max(...tracks.map(t=>t.years*12));
+  const minPaid   = Math.min(...tracks.map(t=>t.paidMonths));
 
-    document.getElementById('overview-subtitle').textContent =
-      `${paid} מתוך ${total} תשלומים · ${Math.round((total-paid)/12*10)/10} שנים נותרות`;
+  document.getElementById('overview-subtitle').textContent =
+    `${tracks.length} מסלולים · ${minPaid} חודשים שולמו · ${maxMonths-minPaid} נותרים במסלול הארוך`;
 
-    document.getElementById('overview-metrics').innerHTML = `
-      <div class="metric">
-        <div class="metric-label">יתרת קרן</div>
-        <div class="metric-value">${fmtS(remaining)}</div>
-        <div class="metric-sub">${100-pctPaid}% מהסכום המקורי</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">תשלום חודשי</div>
-        <div class="metric-value">${fmtS(mp.payment)}</div>
-        <div class="metric-sub">קרן + ריבית</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">סה"כ ריבית</div>
-        <div class="metric-value">${fmtS(totalInterest)}</div>
-        <div class="metric-sub">${Math.round(totalInterest/(mortgage.amount+totalInterest)*100)}% מכלל ההחזרים</div>
-      </div>
-      <div class="metric">
-        <div class="metric-label">חודשים נותרים</div>
-        <div class="metric-value">${total - paid}</div>
-        <div class="metric-sub">${Math.round((total-paid)/12*10)/10} שנים</div>
-      </div>
-    `;
+  document.getElementById('overview-metrics').innerHTML = `
+    <div class="metric"><div class="metric-label">סכום כולל</div><div class="metric-value">${fmtS(totalAmount)}</div><div class="metric-sub">${tracks.length} מסלולים</div></div>
+    <div class="metric"><div class="metric-label">תשלום חודשי</div><div class="metric-value">${fmtS(totalMonthly)}</div><div class="metric-sub">מכל המסלולים</div></div>
+    <div class="metric"><div class="metric-label">יתרת קרן</div><div class="metric-value">${fmtS(totalRemain)}</div><div class="metric-sub">${Math.round(totalRemain/totalAmount*100)}% מהמקור</div></div>
+    <div class="metric"><div class="metric-label">סה"כ ריבית</div><div class="metric-value">${fmtS(totalInt)}</div><div class="metric-sub">${Math.round(totalInt/(totalAmount+totalInt)*100)}% מכלל ההחזרים</div></div>
+  `;
 
-    const prinRatio = Math.round(mp.principal / mp.payment * 100);
-    document.getElementById('monthly-breakdown').innerHTML = `
-      <div class="prog-row"><span style="color:var(--text-sec);font-size:13px;">קרן</span><span style="font-size:13px;font-weight:500;color:var(--blue);">${fmtS(mp.principal)} (${prinRatio}%)</span></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:${prinRatio}%;background:var(--blue);"></div></div>
-      <div class="prog-row"><span style="color:var(--text-sec);font-size:13px;">ריבית</span><span style="font-size:13px;font-weight:500;color:var(--amber);">${fmtS(mp.interest)} (${100-prinRatio}%)</span></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:${100-prinRatio}%;background:var(--amber);"></div></div>
-    `;
+  if (!activeTrack || !tracks.find(t=>t.id===activeTrack)) activeTrack = 'all';
 
-    document.getElementById('paid-so-far').innerHTML = `
-      <div class="info-row"><span class="info-label">קרן ששולמה</span><span class="info-value" style="color:var(--green);">${fmtS(paidPrin)}</span></div>
-      <div class="info-row"><span class="info-label">ריבית ששולמה</span><span class="info-value" style="color:var(--amber);">${fmtS(paidInt)}</span></div>
-      <div class="info-row"><span class="info-label">קרן שנותרה</span><span class="info-value">${fmtS(remaining)}</span></div>
-    `;
+  document.getElementById('track-tabs-overview').innerHTML = [
+    `<button class="track-tab ${activeTrack==='all'?'active':''}" onclick="setTrack('all')">
+      <span class="track-tab-dot" style="background:var(--text-sec);"></span>כל המסלולים
+    </button>`,
+    ...tracks.map((t,i)=>`
+      <button class="track-tab ${activeTrack===t.id?'active':''}" onclick="setTrack(${t.id})"
+        style="${activeTrack===t.id?`border-color:${COLORS[i]};`:''}">
+        <span class="track-tab-dot" style="background:${COLORS[i]};"></span>${t.name}
+      </button>
+    `)
+  ].join('');
 
-    // Principal chart
-    const years = Math.ceil(total / 12);
-    const pLabels = [], pData = [];
-    for (let y = 0; y <= years; y++) {
-      pLabels.push('שנה ' + y);
-      const idx = Math.min(y * 12, schedule.length - 1);
-      pData.push(Math.round((schedule[idx]?.balance ?? 0) / 1000));
-    }
-    if (pChart) pChart.destroy();
-    pChart = new Chart(document.getElementById('principal-chart'), {
-      type: 'line',
-      data: { labels: pLabels, datasets: [{ data: pData, borderColor: '#2255a4', backgroundColor: 'rgba(34,85,164,0.07)', fill: true, tension: 0.35, pointRadius: 2, pointHoverRadius: 4 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { callback: v => '₪' + v + 'K' }, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { ticks: { autoSkip: true, maxTicksLimit: 8 }, grid: { display: false } } } }
-    });
+  renderTrackDetail();
+  renderPrincipalChart();
+  renderSplitChart();
+}
 
-    // Split chart
-    const sLabels = [], sPrin = [], sInt = [];
-    for (let y = 1; y <= Math.min(years, 30); y++) {
-      sLabels.push('שנה ' + y);
-      const slice = schedule.slice((y-1)*12, y*12);
-      sPrin.push(Math.round(slice.reduce((s,r) => s+r.principal, 0) / 12));
-      sInt.push(Math.round(slice.reduce((s,r) => s+r.interest, 0) / 12));
-    }
-    if (sChart) sChart.destroy();
-    sChart = new Chart(document.getElementById('split-chart'), {
-      type: 'bar',
-      data: { labels: sLabels, datasets: [
-        { label: 'קרן', data: sPrin, backgroundColor: '#2255a4' },
-        { label: 'ריבית', data: sInt, backgroundColor: '#b06b10' }
-      ]},
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-          x: { stacked: true, ticks: { autoSkip: true, maxTicksLimit: 10, maxRotation: 0 }, grid: { display: false } },
-          y: { stacked: true, ticks: { callback: v => '₪' + Math.round(v/1000) + 'K' }, grid: { color: 'rgba(0,0,0,0.05)' } }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-  }
+function setTrack(id) { activeTrack=id; renderOverview(); }
 
-  function renderAmortTable(filter) {
-    filter = filter || 'all';
-    const paid = mortgage.paidMonths;
-    let rows = schedule;
-    if (filter === '12') rows = schedule.slice(0, 12);
-    else if (filter === '60') rows = schedule.slice(0, 60);
-    else if (filter === 'remaining') rows = schedule.slice(paid);
-
-    document.getElementById('amort-count').textContent = `מציג ${rows.length} תשלומים`;
-
-    document.getElementById('amort-body').innerHTML = rows.map(r => {
-      const pct = Math.round((mortgage.amount - r.balance) / mortgage.amount * 100);
-      const isPaid = r.month <= paid;
-      const isCurrent = r.month === paid + 1;
-      return `<tr style="${isPaid ? 'opacity:0.45;' : ''}">
-        <td style="font-weight:${isCurrent?'500':'400'};">${r.month}</td>
-        <td>${fmtS(r.payment)}</td>
-        <td style="color:var(--blue);">${fmtS(r.principal)}</td>
-        <td style="color:var(--amber);">${fmtS(r.interest)}</td>
-        <td>${fmtS(r.balance)}</td>
-        <td>
-          <div style="display:flex;align-items:center;gap:6px;">
-            <div style="width:60px;height:4px;background:var(--surface2);border-radius:2px;">
-              <div style="width:${pct}%;height:100%;background:var(--green);border-radius:2px;"></div>
-            </div>
-            <span style="font-size:11px;color:var(--text-ter);">${pct}%</span>
+function renderTrackDetail() {
+  const el = document.getElementById('track-detail-overview');
+  if (activeTrack === 'all') {
+    el.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:0.5rem;">
+      ${tracks.map((t,i)=>{
+        const sc=schedules[t.id], mp=sc[Math.min(t.paidMonths,sc.length-1)];
+        const pct=Math.round((t.amount-mp.balance)/t.amount*100);
+        return `<div style="border:1px solid var(--border);border-radius:var(--radius);padding:1rem;border-right:3px solid ${COLORS[i]};">
+          <div style="font-size:13px;font-weight:500;margin-bottom:8px;color:${COLORS[i]};">${t.name}</div>
+          <div class="info-row"><span class="info-label">סכום</span><span class="info-value">${fmtS(t.amount)}</span></div>
+          <div class="info-row"><span class="info-label">ריבית</span><span class="info-value">${t.rate}%${t.type==='cpi'?' + מדד':''}</span></div>
+          <div class="info-row"><span class="info-label">תשלום חודשי</span><span class="info-value">${fmtS(mp.payment)}</span></div>
+          <div class="info-row"><span class="info-label">יתרת קרן</span><span class="info-value">${fmtS(mp.balance)}</span></div>
+          <div style="margin-top:8px;">
+            <div style="font-size:11px;color:var(--text-ter);margin-bottom:3px;">${pct}% שולם</div>
+            <div style="height:4px;background:var(--surface2);border-radius:2px;"><div style="width:${pct}%;height:100%;background:${COLORS[i]};border-radius:2px;"></div></div>
           </div>
-        </td>
-        <td>
-          ${isPaid ? '<span class="badge badge-green">שולם</span>' : isCurrent ? '<span class="badge badge-blue">הבא</span>' : '<span style="color:var(--text-ter);font-size:12px;">—</span>'}
-        </td>
-      </tr>`;
-    }).join('');
+        </div>`;
+      }).join('')}
+    </div>`;
+  } else {
+    const t=tracks.find(x=>x.id===activeTrack); if(!t) return;
+    const i=tracks.indexOf(t), sc=schedules[t.id];
+    const mp=sc[Math.min(t.paidMonths,sc.length-1)];
+    const paidPrin=t.amount-mp.balance;
+    const paidInt=sc.slice(0,t.paidMonths).reduce((s,r)=>s+r.interest,0);
+    const totalInt=sc.reduce((s,r)=>s+r.interest,0);
+    const pr=Math.round(mp.principal/mp.payment*100);
+    el.innerHTML=`<div class="grid-2" style="margin-top:0.5rem;">
+      <div>
+        <div style="font-size:12px;color:var(--text-sec);margin-bottom:8px;">תשלום חודשי נוכחי</div>
+        <div class="prog-row"><span style="color:var(--text-sec);font-size:13px;">קרן</span><span style="font-size:13px;font-weight:500;color:${COLORS[i]};">${fmtS(mp.principal)} (${pr}%)</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${pr}%;background:${COLORS[i]};"></div></div>
+        <div class="prog-row"><span style="color:var(--text-sec);font-size:13px;">ריבית</span><span style="font-size:13px;font-weight:500;color:var(--amber);">${fmtS(mp.interest)} (${100-pr}%)</span></div>
+        <div class="prog-bar"><div class="prog-fill" style="width:${100-pr}%;background:var(--amber);"></div></div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text-sec);margin-bottom:8px;">מצטבר</div>
+        <div class="info-row"><span class="info-label">קרן ששולמה</span><span class="info-value" style="color:var(--green);">${fmtS(paidPrin)}</span></div>
+        <div class="info-row"><span class="info-label">ריבית ששולמה</span><span class="info-value" style="color:var(--amber);">${fmtS(paidInt)}</span></div>
+        <div class="info-row"><span class="info-label">יתרת קרן</span><span class="info-value">${fmtS(mp.balance)}</span></div>
+        <div class="info-row"><span class="info-label">סה"כ ריבית צפויה</span><span class="info-value">${fmtS(totalInt)}</span></div>
+        <div class="info-row"><span class="info-label">תקופה</span><span class="info-value">${t.years} שנים · ${t.years*12-t.paidMonths} נותרים</span></div>
+      </div>
+    </div>`;
   }
+}
 
-  function renderCompare() {
-    const cmpAmount = +document.getElementById('cmp-amount').value;
-    const cmpYears = +document.getElementById('cmp-years').value;
+function renderPrincipalChart() {
+  const maxYears=Math.max(...tracks.map(t=>t.years));
+  const labels=Array.from({length:maxYears+1},(_,y)=>'שנה '+y);
+  const datasets=tracks.map((t,i)=>({
+    label:t.name,
+    data:Array.from({length:maxYears+1},(_,y)=>{
+      const sc=schedules[t.id],idx=Math.min(y*12,sc.length-1);
+      return Math.round((sc[idx]?.balance??0)/1000);
+    }),
+    borderColor:COLORS[i], backgroundColor:COLORS_BG[i],
+    fill:false, tension:0.35, pointRadius:2, pointHoverRadius:4
+  }));
+  if(pChart) pChart.destroy();
+  pChart=new Chart(document.getElementById('principal-chart'),{
+    type:'line', data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:tracks.length>1,position:'bottom',labels:{boxWidth:10,font:{size:11}}}},
+      scales:{y:{ticks:{callback:v=>'₪'+v+'K'},grid:{color:'rgba(0,0,0,0.05)'}},x:{ticks:{autoSkip:true,maxTicksLimit:8},grid:{display:false}}}}
+  });
+}
 
-    const tracks = [
-      { name: 'משכנתא נוכחית', rate: mortgage.rate, isCpi: mortgage.type==='cpi', cpi: mortgage.cpi, isCurrent: true },
-      { name: 'פריים + 1.5%', rate: 6.0, isCpi: false, cpi: 0 },
-      { name: 'קבועה לא צמודה', rate: 5.2, isCpi: false, cpi: 0, recommended: true },
-      { name: 'משתנה כל 5 שנים', rate: 4.8, isCpi: false, cpi: 0 },
-      { name: 'צמודת מדד 3%', rate: 3.0, isCpi: true, cpi: 3.0 },
-    ];
+function renderSplitChart() {
+  const maxYears=Math.max(...tracks.map(t=>t.years));
+  const numYears=Math.min(maxYears,30);
+  const labels=Array.from({length:numYears},(_,i)=>'שנה '+(i+1));
+  document.getElementById('split-legend').innerHTML=tracks.map((t,i)=>
+    `<span><span class="legend-sq" style="background:${COLORS[i]};"></span>${t.name}</span>`
+  ).join('');
+  const datasets=tracks.map((t,i)=>{
+    const sc=schedules[t.id];
+    return {
+      label:t.name,
+      data:Array.from({length:numYears},(_,y)=>{
+        if(y>=t.years) return 0;
+        const slice=sc.slice(y*12,(y+1)*12);
+        return Math.round(slice.reduce((s,r)=>s+r.principal,0)/12);
+      }),
+      backgroundColor:COLORS[i], stack:'s'
+    };
+  });
+  if(sChart) sChart.destroy();
+  sChart=new Chart(document.getElementById('split-chart'),{
+    type:'bar', data:{labels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{x:{stacked:true,ticks:{autoSkip:true,maxTicksLimit:10,maxRotation:0},grid:{display:false}},y:{stacked:true,ticks:{callback:v=>'₪'+Math.round(v/1000)+'K'},grid:{color:'rgba(0,0,0,0.05)'}}},
+      plugins:{legend:{display:false}}}
+  });
+}
 
-    const currentMonthly = schedule[0]?.payment || 0;
+// ─── Amortization ───
+function renderAmortTable() {
+  const tid=parseInt(document.getElementById('amort-track-filter').value);
+  const filter=document.getElementById('amort-filter').value;
+  const t=tracks.find(x=>x.id===tid)||tracks[0]; if(!t) return;
+  const i=tracks.indexOf(t), sc=schedules[t.id];
+  let rows=sc;
+  if(filter==='12') rows=sc.slice(0,12);
+  else if(filter==='60') rows=sc.slice(0,60);
+  else if(filter==='remaining') rows=sc.slice(t.paidMonths);
+  document.getElementById('amort-count').textContent=`מציג ${rows.length} תשלומים`;
+  document.getElementById('amort-body').innerHTML=rows.map(r=>{
+    const pct=Math.round((t.amount-r.balance)/t.amount*100);
+    const isPaid=r.month<=t.paidMonths, isCur=r.month===t.paidMonths+1;
+    return `<tr style="${isPaid?'opacity:0.45;':''}">
+      <td style="font-weight:${isCur?500:400};">${r.month}</td>
+      <td>${fmtS(r.payment)}</td>
+      <td style="color:${COLORS[i]};">${fmtS(r.principal)}</td>
+      <td style="color:var(--amber);">${fmtS(r.interest)}</td>
+      <td>${fmtS(r.balance)}</td>
+      <td><div style="display:flex;align-items:center;gap:6px;"><div style="width:60px;height:4px;background:var(--surface2);border-radius:2px;"><div style="width:${pct}%;height:100%;background:${COLORS[i]};border-radius:2px;"></div></div><span style="font-size:11px;color:var(--text-ter);">${pct}%</span></div></td>
+      <td>${isPaid?'<span class="badge badge-green">שולם</span>':isCur?'<span class="badge badge-blue">הבא</span>':'<span style="color:var(--text-ter);font-size:12px;">—</span>'}</td>
+    </tr>`;
+  }).join('');
+}
 
-    document.getElementById('compare-grid').innerHTML = tracks.map(t => {
-      const sc = calcSchedule(cmpAmount, t.rate, cmpYears * 12, t.cpi, t.isCpi);
-      const monthly = sc[0].payment;
-      const totalInt = sc.reduce((s,r) => s + r.interest, 0);
-      const diff = t.isCurrent ? null : monthly - currentMonthly;
-      return `<div class="cmp-card ${t.recommended ? 'recommended' : ''}">
-        ${t.recommended ? '<div style="margin-bottom:8px;"><span class="badge badge-blue">מומלץ</span></div>' : ''}
-        ${t.isCurrent ? '<div style="margin-bottom:8px;"><span class="badge badge-amber">נוכחי</span></div>' : ''}
-        <div class="cmp-card-title">${t.name}</div>
-        <div class="cmp-card-rate">${t.rate}%${t.isCpi ? ' + מדד' : ''}</div>
-        <div class="cmp-metric-label">תשלום חודשי</div>
-        <div class="cmp-metric-val">${fmtS(monthly)}</div>
-        <div class="cmp-metric-label">סה"כ ריבית</div>
-        <div style="font-size:14px;font-weight:500;color:var(--amber);margin-bottom:10px;">${fmtS(totalInt)}</div>
-        ${diff !== null ? `<span class="badge ${diff < 0 ? 'badge-green' : 'badge-red'}">${diff < 0 ? '↓' : '↑'} ₪${fmt(Math.abs(diff))}/חודש</span>` : ''}
-      </div>`;
-    }).join('');
+function updateAmortFilter() {
+  const sel=document.getElementById('amort-track-filter');
+  const cur=parseInt(sel.value)||tracks[0]?.id;
+  sel.innerHTML=tracks.map(t=>`<option value="${t.id}" ${t.id===cur?'selected':''}>${t.name}</option>`).join('');
+  renderAmortTable();
+}
 
-    const cmpData = tracks.map(t => {
-      const sc = calcSchedule(cmpAmount, t.rate, cmpYears * 12, t.cpi, t.isCpi);
-      return { name: t.name, interest: Math.round(sc.reduce((s,r) => s + r.interest, 0) / 1000) };
-    });
+// ─── Compare ───
+function renderCompare() {
+  const cmpAmt=+document.getElementById('cmp-amount').value;
+  const cmpYrs=+document.getElementById('cmp-years').value;
+  const curMonthly=tracks.reduce((s,t)=>s+(schedules[t.id][0]?.payment||0),0);
 
-    if (cChart) cChart.destroy();
-    cChart = new Chart(document.getElementById('compare-chart'), {
-      type: 'bar',
-      data: {
-        labels: cmpData.map(d => d.name),
-        datasets: [
-          { label: 'קרן', data: cmpData.map(() => Math.round(cmpAmount/1000)), backgroundColor: '#2255a4' },
-          { label: 'ריבית', data: cmpData.map(d => d.interest), backgroundColor: '#b06b10' }
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        scales: {
-          x: { stacked: true, ticks: { font: { size: 11 } }, grid: { display: false } },
-          y: { stacked: true, ticks: { callback: v => '₪' + v + 'K' }, grid: { color: 'rgba(0,0,0,0.05)' } }
-        },
-        plugins: { legend: { display: false } }
-      }
-    });
-  }
+  const market=[
+    {name:'פריים + 1.5%',rate:6.0,isCpi:false,cpi:0},
+    {name:'קבועה לא צמודה',rate:5.2,isCpi:false,cpi:0,recommended:true},
+    {name:'משתנה כל 5 שנים',rate:4.8,isCpi:false,cpi:0},
+    {name:'צמודת מדד 3%',rate:3.0,isCpi:true,cpi:3.0},
+    {name:'קבועה צמודה',rate:2.5,isCpi:true,cpi:3.0},
+  ];
 
-  function renderSettingsSummary() {
-    const total = mortgage.years * 12;
-    const totalInt = schedule.reduce((s,r) => s + r.interest, 0);
-    const effectiveRate = mortgage.type === 'cpi' ? (mortgage.rate + mortgage.cpi).toFixed(1) : mortgage.rate;
-    document.getElementById('settings-summary').innerHTML = `
-      <div class="info-row"><span class="info-label">סכום הלוואה</span><span class="info-value">${fmtS(mortgage.amount)}</span></div>
-      <div class="info-row"><span class="info-label">ריבית שנתית</span><span class="info-value">${mortgage.rate}%${mortgage.type === 'cpi' ? ' + מדד' : ''}</span></div>
-      <div class="info-row"><span class="info-label">ריבית אפקטיבית</span><span class="info-value">${effectiveRate}%</span></div>
-      <div class="info-row"><span class="info-label">תקופה</span><span class="info-value">${mortgage.years} שנים (${total} חודשים)</span></div>
-      <div class="info-row"><span class="info-label">תשלום חודשי</span><span class="info-value">${fmtS(schedule[0]?.payment || 0)}</span></div>
-      <div class="info-row"><span class="info-label">סך הכל ריבית</span><span class="info-value" style="color:var(--amber);">${fmtS(totalInt)}</span></div>
-      <div class="info-row"><span class="info-label">עלות כוללת</span><span class="info-value">${fmtS(mortgage.amount + totalInt)}</span></div>
-    `;
-  }
+  const rows=[
+    {name:'המשכנתא שלך',rateLabel:tracks.map(t=>t.rate+'%').join(' + '),isCurrent:true,
+     monthly:curMonthly,totalInt:tracks.reduce((s,t)=>s+schedules[t.id].reduce((ss,r)=>ss+r.interest,0),0)},
+    ...market.map(m=>{
+      const sc=calcSchedule(cmpAmt,m.rate,cmpYrs*12,m.cpi,m.isCpi);
+      return {...m,rateLabel:m.rate+'%'+(m.isCpi?' + מדד':''),monthly:sc[0].payment,totalInt:sc.reduce((s,r)=>s+r.interest,0)};
+    })
+  ];
 
-  function showTab(id) {
-    document.querySelectorAll('.nav-tab').forEach((t, i) => {
-      t.classList.toggle('active', ['overview','amortization','compare','settings'][i] === id);
-    });
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('tab-' + id).classList.add('active');
-  }
+  document.getElementById('compare-grid').innerHTML=rows.map(t=>{
+    const diff=t.isCurrent?null:t.monthly-curMonthly;
+    return `<div class="cmp-card ${t.recommended?'recommended':''}">
+      ${t.recommended?'<div style="margin-bottom:8px;"><span class="badge badge-blue">מומלץ</span></div>':''}
+      ${t.isCurrent?'<div style="margin-bottom:8px;"><span class="badge badge-amber">נוכחי</span></div>':''}
+      <div style="font-size:14px;font-weight:500;margin-bottom:4px;">${t.name}</div>
+      <div style="font-size:12px;color:var(--text-sec);margin-bottom:12px;">${t.rateLabel}</div>
+      <div style="font-size:11px;color:var(--text-sec);margin-bottom:2px;">תשלום חודשי</div>
+      <div style="font-size:18px;font-weight:600;margin-bottom:8px;">${fmtS(t.monthly)}</div>
+      <div style="font-size:11px;color:var(--text-sec);margin-bottom:2px;">סה"כ ריבית</div>
+      <div style="font-size:14px;font-weight:500;color:var(--amber);margin-bottom:10px;">${fmtS(t.totalInt)}</div>
+      ${diff!==null?`<span class="badge ${diff<0?'badge-green':'badge-red'}">${diff<0?'↓':'↑'} ₪${fmt(Math.abs(diff))}/חודש</span>`:''}
+    </div>`;
+  }).join('');
 
-  toggleCpi();
-  calcAndRender();
+  if(cChart) cChart.destroy();
+  cChart=new Chart(document.getElementById('compare-chart'),{
+    type:'bar',
+    data:{labels:rows.map(r=>r.name),datasets:[
+      {label:'קרן',data:rows.map(()=>Math.round(cmpAmt/1000)),backgroundColor:'#2255a4'},
+      {label:'ריבית',data:rows.map(r=>Math.round(r.totalInt/1000)),backgroundColor:'#b06b10'}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      scales:{x:{stacked:true,ticks:{font:{size:11},autoSkip:false,maxRotation:20},grid:{display:false}},y:{stacked:true,ticks:{callback:v=>'₪'+v+'K'},grid:{color:'rgba(0,0,0,0.05)'}}},
+      plugins:{legend:{display:false}}}
+  });
+}
+
+// ─── Settings ───
+function renderSettingsTracks() {
+  document.getElementById('tracks-container').innerHTML=tracks.map((t,i)=>`
+    <div class="track-card">
+      <div class="track-card-header">
+        <div style="display:flex;align-items:center;">
+          <span class="track-dot" style="background:${COLORS[i]};"></span>
+          <input class="track-name-input" type="text" value="${t.name}" onchange="tracks.find(x=>x.id===${t.id}).name=this.value" placeholder="שם המסלול">
+        </div>
+        ${tracks.length>1?`<button class="btn btn-danger" onclick="removeTrack(${t.id})">הסר</button>`:''}
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>סכום (₪)</label><input type="number" id="t${t.id}-amount" value="${t.amount}" step="50000"></div>
+        <div class="form-group"><label>ריבית שנתית (%)</label><input type="number" id="t${t.id}-rate" value="${t.rate}" step="0.1"></div>
+        <div class="form-group"><label>תקופה (שנים)</label><input type="number" id="t${t.id}-years" value="${t.years}" min="1" max="40"></div>
+        <div class="form-group"><label>חודשים ששולמו</label><input type="number" id="t${t.id}-paid" value="${t.paidMonths}" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>סוג מסלול</label>
+          <select id="t${t.id}-type" onchange="toggleCpi(${t.id})">
+            <option value="fixed" ${t.type==='fixed'?'selected':''}>פריים / קבועה</option>
+            <option value="cpi"   ${t.type==='cpi'?'selected':''}>צמודת מדד</option>
+          </select>
+        </div>
+        <div class="form-group" id="t${t.id}-cpi-grp" style="opacity:${t.type==='cpi'?1:0.4};">
+          <label>מדד שנתי (%)</label>
+          <input type="number" id="t${t.id}-cpi" value="${t.cpi}" step="0.1" ${t.type==='cpi'?'':'disabled'}>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('add-track-btn').style.display=tracks.length>=5?'none':'flex';
+}
+
+function toggleCpi(id) {
+  const isCpi=document.getElementById('t'+id+'-type').value==='cpi';
+  document.getElementById('t'+id+'-cpi-grp').style.opacity=isCpi?1:0.4;
+  document.getElementById('t'+id+'-cpi').disabled=!isCpi;
+}
+
+function addTrack() {
+  if(tracks.length>=5) return;
+  tracks.push({id:nextId++,name:'מסלול '+(tracks.length+1),amount:500000,rate:4.5,years:20,paidMonths:0,type:'fixed',cpi:3.5});
+  renderSettingsTracks();
+}
+
+function removeTrack(id) {
+  if(tracks.length<=1) return;
+  tracks=tracks.filter(t=>t.id!==id);
+  renderSettingsTracks();
+}
+
+function calcAndRender() {
+  tracks.forEach(t=>{
+    t.amount     = +document.getElementById('t'+t.id+'-amount').value;
+    t.rate       = +document.getElementById('t'+t.id+'-rate').value;
+    t.years      = +document.getElementById('t'+t.id+'-years').value;
+    t.paidMonths = +document.getElementById('t'+t.id+'-paid').value;
+    t.type       = document.getElementById('t'+t.id+'-type').value;
+    t.cpi        = +document.getElementById('t'+t.id+'-cpi').value;
+  });
+  recalcAll();
+  renderOverview();
+  updateAmortFilter();
+  const total=tracks.reduce((s,t)=>s+t.amount,0);
+  const maxYrs=Math.max(...tracks.map(t=>t.years));
+  document.getElementById('cmp-amount').value=total;
+  document.getElementById('cmp-years').value=maxYrs;
+  renderCompare();
+}
+
+function showTab(id) {
+  ['overview','amortization','compare','settings'].forEach((name,i)=>{
+    document.querySelectorAll('.nav-tab')[i].classList.toggle('active',name===id);
+  });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// Init
+recalcAll();
+renderOverview();
+renderSettingsTracks();
+updateAmortFilter();
+renderCompare();
 </script>
 </body>
 </html>
